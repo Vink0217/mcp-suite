@@ -1,4 +1,3 @@
-# filesystem_tools.py
 import os
 import time
 import shutil

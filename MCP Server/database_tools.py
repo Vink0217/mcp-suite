@@ -1,4 +1,3 @@
-# database_tools.py
 import sqlite3
 import os
 import csv
