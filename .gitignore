@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# MCP Server workspace
+MCP Server/workspace/
+
+# OS junk
+.DS_Store
+Thumbs.db
