@@ -20,14 +20,14 @@ def _safe_path(path: str) -> str:
     return full_path
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={"files": [str]})
 def list_files(path: str = ".") -> dict:
     """List all files in the given directory inside the sandbox."""
     target = _safe_path(path)
     return {"files": [f for f in os.listdir(target) if os.path.isfile(os.path.join(target, f))]}
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={"content": str})
 def read_file(path: str) -> dict:
     """Read the full content of a text file inside the sandbox."""
     target = _safe_path(path)
@@ -35,7 +35,7 @@ def read_file(path: str) -> dict:
         return {"content": f.read()}
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={"status": str, "error": str})
 def write_file(path: str, content: str, overwrite: bool = False) -> dict:
     """Write text content to a file. Use overwrite=True to replace an existing file."""
     target = _safe_path(path)
@@ -47,7 +47,7 @@ def write_file(path: str, content: str, overwrite: bool = False) -> dict:
     return {"status": f"File '{path}' written successfully."}
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={"status": str, "error": str})
 def delete_file(path: str) -> dict:
     """Delete a file inside the sandbox directory."""
     target = _safe_path(path)
@@ -59,7 +59,13 @@ def delete_file(path: str) -> dict:
     return {"status": f"File '{path}' deleted successfully."}
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={
+    "path": str,
+    "is_directory": bool,
+    "size_bytes": int,
+    "last_modified": str,
+    "error": str
+})
 def file_info(path: str) -> dict:
     """Return metadata (size, type, last modified time) for a file or directory."""
     target = _safe_path(path)
@@ -74,7 +80,7 @@ def file_info(path: str) -> dict:
     }
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={"matches": [str]})
 def search_files(keyword: str, path: str = ".") -> dict:
     """Search for files by name containing a given keyword."""
     target = _safe_path(path)
@@ -86,7 +92,13 @@ def search_files(keyword: str, path: str = ".") -> dict:
     return {"matches": matches}
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={
+    "matches": [{
+        "file": str,
+        "line_number": int,
+        "line": str
+    }]
+})
 def search_text(keyword: str, path: str = ".") -> dict:
     """Search for text inside files, returning line matches."""
     target = _safe_path(path)
@@ -108,7 +120,7 @@ def search_text(keyword: str, path: str = ".") -> dict:
     return {"matches": matches}
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={"status": str, "error": str})
 def make_directory(path: str) -> dict:
     """Create a new directory inside the sandbox."""
     target = _safe_path(path)
@@ -118,14 +130,14 @@ def make_directory(path: str) -> dict:
     return {"status": f"Directory '{path}' created successfully."}
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={"directories": [str]})
 def list_directories(path: str = ".") -> dict:
     """List all directories in the given path inside the sandbox."""
     target = _safe_path(path)
     return {"directories": [d for d in os.listdir(target) if os.path.isdir(os.path.join(target, d))]}
 
 
-@mcp.tool(tools)
+@mcp.tool(tools, structured_output={"status": str, "error": str})
 def delete_directory(path: str) -> dict:
     """Delete a directory (and its contents) inside the sandbox."""
     target = _safe_path(path)
