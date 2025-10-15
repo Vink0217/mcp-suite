@@ -11,9 +11,15 @@ __pycache__/
 env/
 venv/
 
-# MCP Server workspace
-MCP Server/workspace/
+# Workspace
+workspace
 
 # OS junk
 .DS_Store
 Thumbs.db
+
+# Vercel
+vercel
+
+# env
+.env
