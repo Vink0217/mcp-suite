@@ -115,6 +115,12 @@ async def handle_call_tool(request: Request):
     except Exception as e:
         logger.exception(f"Error executing tool '{tool_name or 'unknown'}' via /call_tool") # Log full traceback
         raise HTTPException(status_code=500, detail=f"Internal server error executing tool: {e}")
+    
+# --- Add a simple Health Check endpoint ---
+@app.get("/healthz") # Or just @app.get("/") if you prefer
+async def health_check():
+    """Simple endpoint to confirm the server is running."""
+    return {"status": "ok"}
 
 # --- Step 5: Mount the MCP Engine ---
 # Mount the original MCP server (engine) at the root path.
