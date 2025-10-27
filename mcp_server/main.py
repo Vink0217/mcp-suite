@@ -126,7 +126,7 @@ async def root_health_check():
 # --- Step 5: Mount the MCP Engine ---
 # Mount the original MCP server (engine) at the root path.
 # This allows your local MCP client (client_runner) to still connect directly via MCP protocol.
-app.mount("/mcp", mcp_engine)
+#app.mount("/mcp", mcp_engine)
 
 console.print(Panel.fit("[green bold]MCP Server with FastAPI front door is ready.[/]"))
 
