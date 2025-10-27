@@ -1,20 +1,25 @@
 # Dockerfile
 
-# Use an official, slim Python image
+# Use the Python 3.10 image we know works
 FROM python:3.10-slim
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy your requirements file first
+# Copy requirements first for better caching
 COPY requirements.txt /app/
 
-# Install your Python packages
+# Install packages using uv (faster)
+# RUN pip install --no-cache-dir uv # Uncomment if uv isn't pre-installed in the base image
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your server code
 COPY ./mcp_server /app/mcp_server
-COPY ./client_runner /app/client_runner
+COPY ./client_runner /app/client_runner 
 
-# This is the command that starts your server
-CMD ["python", "-m", "mcp_server.main"]
+# Expose the port the server will run on
+EXPOSE 8000
+
+# --- Correct CMD using Uvicorn ---
+# This tells Uvicorn to run the 'app' object found in the mcp_server/main.py file
+CMD ["uvicorn", "mcp_server.main:app", "--host", "0.0.0.0", "--port", "8000"]
