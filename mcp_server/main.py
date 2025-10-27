@@ -117,15 +117,16 @@ async def handle_call_tool(request: Request):
         raise HTTPException(status_code=500, detail=f"Internal server error executing tool: {e}")
     
 # --- Add a simple Health Check endpoint ---
-@app.get("/healthz") # Or just @app.get("/") if you prefer
-async def health_check():
-    """Simple endpoint to confirm the server is running."""
-    return {"status": "ok"}
+@app.get("/")
+async def root_health_check():
+    """Simple root endpoint for Railway health check."""
+    logger.info("Received GET request at / (health check)") # Add logging
+    return {"status": "ok", "message": "MCP Server is running"}
 
 # --- Step 5: Mount the MCP Engine ---
 # Mount the original MCP server (engine) at the root path.
 # This allows your local MCP client (client_runner) to still connect directly via MCP protocol.
-app.mount("/", mcp_engine)
+app.mount("/mcp", mcp_engine)
 
 console.print(Panel.fit("[green bold]MCP Server with FastAPI front door is ready.[/]"))
 
