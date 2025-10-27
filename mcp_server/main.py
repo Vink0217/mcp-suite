@@ -7,6 +7,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 import logging # Added for better logging
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
