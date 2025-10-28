@@ -65,3 +65,5 @@ except Exception as e:
     from fastapi import FastAPI
     app = FastAPI()
     console.print("[yellow]Using basic FastAPI fallback[/]")
+
+app = mcp._app if hasattr(mcp, '_app') else mcp.app if hasattr(mcp, 'app') else mcp

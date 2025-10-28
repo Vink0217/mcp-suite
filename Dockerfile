@@ -9,8 +9,7 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt /app/
 
-# Install packages using uv (faster)
-# RUN pip install --no-cache-dir uv # Uncomment if uv isn't pre-installed in the base image
+# Install packages
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your server code
@@ -20,6 +19,10 @@ COPY ./client_runner /app/client_runner
 # Expose the port the server will run on
 EXPOSE 8000
 
-# --- Correct CMD using Uvicorn ---
-# This tells Uvicorn to run the 'app' object found in the mcp_server/main.py file
+# Environment variables for configuration
+ENV HOST=0.0.0.0
+ENV PORT=8000
+
+# --- Correct CMD using Uvicorn with fixed port ---
+# Use hardcoded port instead of $PORT variable
 CMD ["uvicorn", "mcp_server.main:app", "--host", "0.0.0.0", "--port", "8000"]
