@@ -23,6 +23,6 @@ EXPOSE 8000
 ENV HOST=0.0.0.0
 ENV PORT=8000
 
-# --- Correct CMD using Uvicorn with fixed port ---
-# Use hardcoded port instead of $PORT variable
-CMD ["uvicorn", "mcp_server.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# --- Correct CMD using Uvicorn for Railway ---
+# Use shell form (not JSON array) so $PORT gets expanded by Railway
+CMD uvicorn mcp_server.main:app --host 0.0.0.0 --port ${PORT:-8000}
