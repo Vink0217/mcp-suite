@@ -22,4 +22,4 @@ EXPOSE 8000
 # --- Correct CMD using Uvicorn ---
 # This tells Uvicorn to run the 'app' object found in mcp_server/main.py
 # It uses the PORT environment variable provided by Railway (defaulting to 8000 if not set)
-CMD ["uvicorn", "mcp_server.main:app", "--host", "0.0.0.0", "--port", "${PORT:-8000}"]
+CMD uvicorn mcp_server.main:app --host 0.0.0.0 --port ${PORT:-8000}
