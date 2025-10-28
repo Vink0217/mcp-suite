@@ -1,0 +1,11 @@
+# railway.toml
+[build]
+builder = "NIXPACKS" # Use Nixpacks builder (usually default)
+
+[deploy]
+# Use sh -c to correctly interpret $PORT provided by Railway
+startCommand = "/bin/sh -c 'uvicorn mcp_server.main:app --host 0.0.0.0 --port $PORT'"
+healthcheckPath = "/" # Check the root path defined in main.py
+healthcheckTimeout = 120 # Timeout in seconds
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
