@@ -108,6 +108,22 @@ async def root_health_check():
     logger.info("Received request at / (health check)")
     return {"status": "ok", "message": "MCP Server is running"}
 
+@app.on_event("startup")
+async def startup_event():
+    """Log startup"""
+    logger.info("Application startup complete - server is ready")
+
+@app.get("/")
+async def root_health_check():
+    """Simple root endpoint for Railway health check."""
+    logger.info("Received health check request")
+    return {"status": "healthy", "service": "MCP Server"}
+
+@app.get("/health")
+async def health_check():
+    """Additional health check endpoint"""
+    return {"status": "healthy"}
+
 # --- Remove Mounting (Keep it removed for now) ---
 # app.mount("/mcp", mcp_engine)
 
