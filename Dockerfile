@@ -14,12 +14,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your server code
 COPY ./mcp_server /app/mcp_server
-# COPY ./client_runner /app/client_runner # Optional: Only if needed inside the container
+COPY ./client_runner /app/client_runner 
 
-# Expose the port the server will run on (Railway uses this info)
+# Expose the port the server will run on
 EXPOSE 8000
 
-# --- Correct CMD using Uvicorn ---
-# This tells Uvicorn to run the 'app' object found in mcp_server/main.py
-# It uses the PORT environment variable provided by Railway (defaulting to 8000 if not set)
-#CMD uvicorn mcp_server.main:app --host 0.0.0.0 --port ${PORT:-8000}
+# Environment variables for configuration
+ENV HOST=0.0.0.0
+ENV PORT=8000
+
+# --- CMD for Railway: Try Uvicorn first, fallback to direct run ---
+# Use shell form so $PORT gets expanded by Railway
+CMD uvicorn mcp_server.main:app --host 0.0.0.0 --port ${PORT:-8000} || python -m mcp_server.main
